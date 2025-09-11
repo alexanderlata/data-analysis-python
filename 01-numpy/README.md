@@ -2,7 +2,7 @@
 
 Библиотека [`NumPy`](https://numpy.org) (Numerical Python) является основой для научных вычислений в Python и позволяет работать с **многомерными массивами** и математическими функциями
 
-[ndarray](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html) - это N-мерный массив (структура данных), который используется для хранения элементов одного типа данных в многомерной сетке.
+[ndarray](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html) - это N-мерный однотипный массив (структура данных), который используется для хранения элементов одного типа данных в многомерной сетке.
 
 **Важно**: все элементы массива NumPy должны быть одного типа данных (int, float, complex и др.)
 
@@ -42,8 +42,10 @@ print(f"Версия NumPy: {np.__version__}")
 |Функция|Описание|
 |-|-|
 |`np.array(object, dtype=None)`|Создание массива из списка, кортежа или другой последовательности|
-|`np.arange(start, stop, step)`|Создание массива с последовательностью чисел|
-|`np.linspace(start, stop, num)`|Создание массива с равномерно распределенными числами|
+|`np.arange([start, ]stop, [step, ] dtype=None, device=None, like=None)`|Создание массива с последовательностью чисел|
+|`np.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None, axis=0, device=None)`|Создание массива с равномерно распределенными числами|
+|`np.geomspace(start, stop, num=50, endpoint=True, dtype=None, axis=0)`|Создание массива с |
+|`np.logspace(start, stop, num=50, endpoint=True, base=10.0, dtype=None, axis=0)`|Создание массива с |
 |`np.zeros(shape, dtype=float)`|Создание массива из нулей|
 |`np.ones(shape, dtype=float)`|Создание массива из единиц|
 |`np.eye(N, M=None, dtype=float)`|Создание единичной матрицы|
