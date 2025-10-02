@@ -23,6 +23,10 @@
 
 Альтернативно в Windows можно использовать `pip install`
 
+```bash
+pip install pandas numpy matplotlib seaborn plotly scipy scikit-learn openpyxl jupyterlab
+```
+
 # Обновление установленных библиотек
 
 В командной строке (Anaconda PowerShell Prompt в Windows, Terminal в MacOS) выполнить `conda update --all`
