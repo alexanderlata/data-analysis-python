@@ -1,0 +1,16 @@
+name: courses
+channels:
+  - conda-forge
+dependencies:
+  - python=3.14
+  - numpy>=2.4
+  - pandas>=3.0
+  - matplotlib>=3.10
+  - seaborn>=0.13
+  - plotly>=6.6
+  - scipy>=1.17
+  - statsmodels>=0.14
+  - scikit-learn>=1.8
+  - openpyxl>=3.1
+  - jupyterlab>=4.5
+  - ipykernel
