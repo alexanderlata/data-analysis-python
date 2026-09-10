@@ -13,7 +13,7 @@
 | `project/` | этапы проекта на собственных юридических данных |
 | `reference/` | справочники-шпаргалки |
 | `datasets/` | наборы данных в формате CSV |
-| `exercises/` | банк задач |
+| `exercises/` | упражнения к семинарам: листок `seminar-NN-tasks.md` с формулировками и ноутбук `seminar-NN-tasks.ipynb` с заготовками и тестами |
 | `syllabus.md` | календарный план |
 | `how-to-install-Python.md` | установка Python и окружения курса |
 | `environment.yml`, `requirements.txt` | окружение курса для conda и pip |
@@ -24,7 +24,7 @@
 | № | Тема | Ноутбук | Домашнее задание | Тесты и контрольные точки |
 |---|---|---|---|---|
 | 1 | Jupyter Lab, Markdown, первые задачи на Python | [seminar-01-tasks.ipynb](notebooks/seminar-01-tasks.ipynb) | [homework-01.md](homework/homework-01.md) | тест «Семинар 1»; дома: тесты «Проверка установки» и «Домашнее задание 1: функции» |
-| 2 | NumPy: массивы, индексация, векторизация | в подготовке | | |
+| 2 | NumPy: массивы, индексация, векторизация | [seminar-02-numpy-arrays.ipynb](notebooks/seminar-02-numpy-arrays.ipynb) | [листок](exercises/seminar-02-tasks.md), [ноутбук](exercises/seminar-02-tasks.ipynb) | [homework-02.md](homework/homework-02.md) | тест «Семинар 2» |
 | 3 | NumPy: случайные выборки, статистика, пропуски, поиск и сортировка | в подготовке | | |
 | 4 | Pandas: Series, DataFrame, загрузка и просмотр данных. Старт сквозного кейса | в подготовке | | выдаётся этап 1 проекта |
 | 5 | Pandas: фильтрация, сортировка, группировка, агрегация, сводные таблицы | в подготовке | | |
