@@ -25,7 +25,7 @@
 |---|---|---|---|---|---|
 | 1 | Jupyter Lab, Markdown, первые задачи на Python | [seminar-01-tasks.ipynb](notebooks/seminar-01-tasks.ipynb) | в ноутбуке | [homework-01.md](homework/homework-01.md) | тест «Семинар 1»; дома: тесты «Проверка установки» и «Домашнее задание 1: функции» |
 | 2 | NumPy: массивы, индексация, векторизация | [seminar-02-numpy-arrays.ipynb](notebooks/seminar-02-numpy-arrays.ipynb) | [листок](exercises/seminar-02-tasks.md), [ноутбук](exercises/seminar-02-tasks.ipynb) | [homework-02.md](homework/homework-02.md) | тест «Семинар 2» |
-| 3 | NumPy: случайные выборки, статистика, пропуски, поиск и сортировка | в подготовке | | | |
+| 3 | NumPy: случайные выборки, статистика, пропуски, поиск и сортировка | [seminar-03-numpy-stats.ipynb](notebooks/seminar-03-numpy-stats.ipynb) | [листок](exercises/seminar-03-tasks.md), [ноутбук](exercises/seminar-03-tasks.ipynb) | [homework-03.md](homework/homework-03.md) | тест «Семинар 3» |
 | 4 | Pandas: Series, DataFrame, загрузка и просмотр данных. Старт сквозного кейса | в подготовке | | | выдаётся этап 1 проекта |
 | 5 | Pandas: фильтрация, сортировка, группировка, агрегация, сводные таблицы | в подготовке | | | |
 | 6 | Pandas: типы, даты, пропуски, объединение таблиц | в подготовке | | | сдача этапа 1 проекта |
