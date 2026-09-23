@@ -26,8 +26,8 @@
 | 1 | Jupyter Lab, Markdown, первые задачи на Python | [seminar-01-tasks.ipynb](notebooks/seminar-01-tasks.ipynb) | в ноутбуке | [homework-01.md](homework/homework-01.md) | тест «Семинар 1»; дома: тесты «Проверка установки» и «Домашнее задание 1: функции» |
 | 2 | NumPy: массивы, индексация, векторизация | [seminar-02-numpy-arrays.ipynb](notebooks/seminar-02-numpy-arrays.ipynb) | [листок](exercises/seminar-02-tasks.md), [ноутбук](exercises/seminar-02-tasks.ipynb) | [homework-02.md](homework/homework-02.md) | тест «Семинар 2» |
 | 3 | NumPy: случайные выборки, статистика, пропуски, поиск и сортировка | [seminar-03-numpy-stats.ipynb](notebooks/seminar-03-numpy-stats.ipynb) | [листок](exercises/seminar-03-tasks.md), [ноутбук](exercises/seminar-03-tasks.ipynb) | [homework-03.md](homework/homework-03.md) | тест «Семинар 3» |
-| 4 | Pandas: Series, DataFrame, загрузка и просмотр данных. Старт сквозного кейса | в подготовке | | | выдаётся этап 1 проекта |
-| 5 | Pandas: фильтрация, сортировка, группировка, агрегация, сводные таблицы | в подготовке | | | |
+| 4 | Pandas: Series, DataFrame, загрузка и просмотр данных. Старт сквозного кейса | [seminar-04-pandas-basics.ipynb](notebooks/seminar-04-pandas-basics.ipynb) | [листок](exercises/seminar-04-tasks.md), [ноутбук](exercises/seminar-04-tasks.ipynb) | [homework-04.md](homework/homework-04.md) | тест «Семинар 4»; выдаётся этап 1 проекта |
+| 5 | Pandas: фильтрация, сортировка, группировка, агрегация, сводные таблицы | [seminar-05-pandas-groupby.ipynb](notebooks/seminar-05-pandas-groupby.ipynb) | [листок](exercises/seminar-05-tasks.md), [ноутбук](exercises/seminar-05-tasks.ipynb) | [homework-05.md](homework/homework-05.md) | тест «Семинар 5» |
 | 6 | Pandas: типы, даты, пропуски, объединение таблиц | в подготовке | | | сдача этапа 1 проекта |
 | 7 | Контрольная работа № 1: NumPy и Pandas | в подготовке | | | КР 1 |
 | 8 | Matplotlib и Seaborn: базовые графики и оформление | в подготовке | | | |
