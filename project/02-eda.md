@@ -6,7 +6,7 @@
 
 **Выдаётся:** семинар 9  
 **Дедлайн:** семинар 11  
-**Баллы:** по шкале из раздела «Контрольные точки» в README курса
+**Баллы:** вес этапа в итоговой оценке объявляет преподаватель; распределение внутри этапа — в разделе «Критерии оценки»
 
 ---
 
@@ -51,21 +51,10 @@ df = pd.read_json('your_data.json')
 Получите базовую информацию о датасете:
 
 ```python
-# Размерность данных
-print(f"Количество строк: {df.shape[0]}")
-print(f"Количество столбцов: {df.shape[1]}")
-
-# Первые строки
-print(df.head())
-
-# Последние строки
-print(df.tail())
-
-# Информация о типах данных и пропусках
-print(df.info())
-
-# Названия всех столбцов
-print(df.columns.tolist())
+df.shape                                 # строк и столбцов
+df.head()                                # первые строки
+df.info()                                # типы и пропуски по столбцам
+df.columns.tolist()                      # имена столбцов
 ```
 
 **Создайте таблицу с информацией о данных:**
@@ -84,13 +73,7 @@ print(df.columns.tolist())
 Создайте таблицу со всеми переменными и их типами данных в pandas:
 
 ```python
-# Типы данных
-dtypes_df = pd.DataFrame({
-    'Название переменной': df.columns,
-    'Тип в pandas': df.dtypes.values,
-    'Количество уникальных значений': [df[col].nunique() for col in df.columns]
-})
-print(dtypes_df)
+pd.DataFrame({'тип': df.dtypes, 'уникальных значений': df.nunique()})   # таблица типов
 ```
 
 **Проанализируйте:**
@@ -119,17 +102,11 @@ df['numeric_column'] = pd.to_numeric(df['numeric_column'], errors='coerce')
 Проверьте наличие пропущенных значений:
 
 ```python
-# Количество пропусков по каждому столбцу
-missing_data = pd.DataFrame({
-    'Переменная': df.columns,
-    'Количество пропусков': df.isnull().sum().values,
-    'Процент пропусков': (df.isnull().sum().values / len(df) * 100).round(2)
-})
-
-# Сортируем по убыванию процента пропусков
-missing_data = missing_data.sort_values('Процент пропусков', ascending=False)
-print(missing_data[missing_data['Количество пропусков'] > 0])
+missing = pd.DataFrame({'пропусков': df.isna().sum(), 'доля': df.isna().mean().round(3)})   # сводка пропусков
+missing[missing['пропусков'] > 0].sort_values('доля', ascending=False)
 ```
+
+Коды вроде 95, 96 и 99 в стаже или 9999 в сумме — тоже пропуски, только скрытые: их видно в `value_counts`, и перед подсчётом их заменяют на `np.nan`, как на семинаре 6.
 
 #### 2.2. Визуализация пропусков
 
@@ -139,34 +116,39 @@ print(missing_data[missing_data['Количество пропусков'] > 0])
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Настройка стиля
-plt.rcParams['figure.figsize'] = (10, 6)
-sns.set_style("whitegrid")
+sns.set_theme(style='whitegrid')
 
-# Если есть пропуски
-if df.isnull().sum().sum() > 0:
-    # График пропусков
-    plt.figure(figsize=(10, 6))
-    missing_cols = missing_data[missing_data['Количество пропусков'] > 0]
-    plt.barh(missing_cols['Переменная'], missing_cols['Процент пропусков'])
-    plt.xlabel('Процент пропусков (%)')
-    plt.title('Пропущенные значения по переменным')
-    plt.tight_layout()
-    plt.show()
+shares = df.isna().mean()
+fig, ax = plt.subplots(figsize=(8, 4))
+shares[shares > 0].sort_values().plot.barh(ax=ax)   # самый дырявый столбец сверху
+ax.set_title('Доля пропусков по столбцам')
+ax.set_xlabel('Доля пропусков');
 ```
+
+Это функция `missing_bars` из упражнений семинара 9: её можно скопировать из своего ноутбука и вызвать одной строкой.
 
 #### 2.3. Анализ пропусков
 
 **Ответьте на вопросы:**
 1. В каких переменных больше всего пропусков?
-2. Есть ли закономерность в пропусках? (например, пропуски связаны между собой)
-3. Как вы планируете обрабатывать пропуски? (удалить строки, заполнить средним/медианой/модой, оставить как есть)
+2. Есть ли закономерность в пропусках? Например, пропуски связаны между собой или с группой: стажа нет у всех пешеходов.
+3. Что делать с пропусками каждого столбца и почему? Ответ запишите в 2.4.
 
 **Пример проверки связанности пропусков:**
 ```python
-# Проверка: если пропущена переменная A, пропущена ли и переменная B?
-df[['column_A', 'column_B']].isnull().sum()
+pd.crosstab(df['column_A'].isna(), df['column_B'].isna())   # пропуски двух столбцов вместе
 ```
+
+#### 2.4. Решение по пропускам
+
+Найти пропуски мало: по каждому столбцу с пропусками нужно решение и его причина. Сначала спросите, почему значения нет, и только потом — чем его заменить:
+
+- оставить пропуск: статистики pandas его пропускают, а доли считаются от числа известных значений;
+- пропуск со смыслом не заполнять, а отфильтровать группу: стажа у пешехода нет, и медиана выдала бы его каждому пешеходу;
+- заполнить медианой своей группы, `df.groupby('группа')['столбец'].transform('median')`, и сохранить отдельный столбец — индикатор пропуска;
+- удалить строки — только через `dropna(subset=[...])` и только если они больше ни на что не годны.
+
+Любое заполнение сдвигает среднее: покажите среднее, медиану и число значений до и после, как в разделе 5 ноутбука семинара 10. Каждое решение — строка журнала решений из 6.4: что проверено, сколько пропусков, что сделано и почему.
 
 ---
 
@@ -177,22 +159,9 @@ df[['column_A', 'column_B']].isnull().sum()
 Рассчитайте базовые статистики для всех числовых переменных:
 
 ```python
-# Описательные статистики
-numeric_stats = df.describe()
-print(numeric_stats)
-
-# Дополнительные статистики
-numeric_cols = df.select_dtypes(include=[np.number]).columns
-
-for col in numeric_cols:
-    print(f"\n=== {col} ===")
-    print(f"Среднее: {df[col].mean():.2f}")
-    print(f"Медиана: {df[col].median():.2f}")
-    print(f"Мода: {df[col].mode().values[0] if not df[col].mode().empty else 'Нет'}")
-    print(f"Стандартное отклонение: {df[col].std():.2f}")
-    print(f"Минимум: {df[col].min():.2f}")
-    print(f"Максимум: {df[col].max():.2f}")
-    print(f"Квартили (25%, 50%, 75%): {df[col].quantile(0.25):.2f}, {df[col].quantile(0.5):.2f}, {df[col].quantile(0.75):.2f}")
+numeric_cols = ['amount', 'duration_days']       # список числовых столбцов по смыслу: номера и коды сюда не входят
+df[numeric_cols].describe().round(2)             # число, среднее, разброс, минимум, квартили, максимум
+df[numeric_cols].median()                        # медианы отдельно: describe их называет 50%
 ```
 
 **Создайте таблицу с ключевыми статистиками** (можно экспортировать из `describe()`):
@@ -206,18 +175,11 @@ for col in numeric_cols:
 Проанализируйте категориальные переменные:
 
 ```python
-# Выбираем категориальные столбцы
-categorical_cols = df.select_dtypes(include=['object', 'category']).columns
-
+categorical_cols = ['case_type', 'region']       # список категориальных столбцов по смыслу
 for col in categorical_cols:
-    print(f"\n=== {col} ===")
-    print(f"Количество уникальных значений: {df[col].nunique()}")
-    print(f"Наиболее частое значение: {df[col].mode().values[0] if not df[col].mode().empty else 'Нет'}")
-    print("\nТоп-10 наиболее частых значений:")
-    print(df[col].value_counts().head(10))
-    print("\nДоля топ-10 значений: {:.1f}%".format(
-        df[col].value_counts().head(10).sum() / len(df) * 100
-    ))
+    print(col, df[col].nunique(), 'значений')
+    print(df[col].value_counts().head(10))                           # десять самых частых
+    print(df[col].value_counts(normalize=True).head(10).sum().round(3), 'доля десяти самых частых\n')
 ```
 
 **Для каждой категориальной переменной укажите:**
@@ -230,17 +192,11 @@ for col in categorical_cols:
 Если в данных есть временные переменные:
 
 ```python
-# Убедитесь, что столбец в формате datetime
-df['date_column'] = pd.to_datetime(df['date_column'])
-
-# Временной диапазон
-print(f"Период данных: с {df['date_column'].min()} по {df['date_column'].max()}")
-print(f"Длительность: {(df['date_column'].max() - df['date_column'].min()).days} дней")
-
-# Количество наблюдений по годам/месяцам
+df['date_column'] = pd.to_datetime(df['date_column'])              # даты настоящие
+df['date_column'].min(), df['date_column'].max()                   # период данных
 df['year'] = df['date_column'].dt.year
 df['month'] = df['date_column'].dt.month
-print(df['year'].value_counts().sort_index())
+df.groupby('year').size()                                          # наблюдений по годам
 ```
 
 ---
@@ -252,18 +208,13 @@ print(df['year'].value_counts().sort_index())
 Постройте корреляционную матрицу для числовых переменных:
 
 ```python
-# Корреляционная матрица
-correlation_matrix = df[numeric_cols].corr()
-print(correlation_matrix)
-
-# Визуализация корреляционной матрицы
-plt.figure(figsize=(10, 8))
-sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', center=0, 
-            fmt='.2f', square=True, linewidths=1)
-plt.title('Корреляционная матрица числовых переменных')
-plt.tight_layout()
-plt.show()
+corr = df[numeric_cols].corr()                   # только числовые столбцы по смыслу: corr() по всей таблице падает на тексте
+fig, ax = plt.subplots(figsize=(7, 5))
+sns.heatmap(corr, cmap='coolwarm', center=0, annot=True, fmt='.2f', ax=ax)   # расходящаяся палитра с нулём в середине
+ax.set_title('Корреляции числовых столбцов');
 ```
+
+Это функция `corr_heat` из упражнений семинара 9.
 
 #### 4.2. Анализ корреляций
 
@@ -275,46 +226,39 @@ plt.show()
 
 **Пример анализа:**
 ```python
-# Найдем пары с высокой корреляцией
-high_corr_pairs = []
-for i in range(len(correlation_matrix.columns)):
-    for j in range(i+1, len(correlation_matrix.columns)):
-        if abs(correlation_matrix.iloc[i, j]) > 0.7:
-            high_corr_pairs.append({
-                'Переменная 1': correlation_matrix.columns[i],
-                'Переменная 2': correlation_matrix.columns[j],
-                'Корреляция': correlation_matrix.iloc[i, j]
-            })
-
-high_corr_df = pd.DataFrame(high_corr_pairs)
-print(high_corr_df)
+upper = np.triu(np.ones(corr.shape, dtype=bool), k=1)             # каждая пара один раз, без диагонали
+pairs = corr.where(upper).stack().dropna().sort_values()           # все пары столбцов по возрастанию корреляции
+pairs[pairs.abs() > 0.7]                                           # сильные связи
 ```
 
 ---
 
 ### Часть 5: Визуализация данных (обязательно)
 
+**Постройте минимум 5 различных визуализаций**, которые раскрывают интересные закономерности в ваших данных: в этот счёт идут графики всех разделов 5.1–5.4.
+
 #### 5.1. Распределение числовых переменных
 
 Постройте гистограммы для всех числовых переменных:
 
 ```python
-# Гистограммы для всех числовых переменных
-df[numeric_cols].hist(bins=30, figsize=(15, 10), edgecolor='black')
-plt.tight_layout()
-plt.suptitle('Распределение числовых переменных', y=1.02, fontsize=16)
-plt.show()
+fig, axes = plt.subplots(1, len(numeric_cols), figsize=(4 * len(numeric_cols), 4), squeeze=False)
+for ax, col in zip(axes[0], numeric_cols):
+    sns.histplot(data=df, x=col, ax=ax)          # для целых величин discrete=True, для непрерывных подобрать bins
+    ax.set_title(col)
+    ax.set_ylabel('Число наблюдений')
+fig.suptitle('Распределения числовых столбцов')
+fig.tight_layout()
 
-# Boxplot для выявления выбросов
-fig, axes = plt.subplots(1, len(numeric_cols), figsize=(15, 5))
-if len(numeric_cols) == 1:
-    axes = [axes]
-for i, col in enumerate(numeric_cols):
-    df.boxplot(column=col, ax=axes[i])
-    axes[i].set_title(col)
-plt.tight_layout()
-plt.show()
+fig, axes = plt.subplots(1, len(numeric_cols), figsize=(4 * len(numeric_cols), 4), squeeze=False)
+for ax, col in zip(axes[0], numeric_cols):
+    sns.boxplot(data=df, y=col, ax=ax)           # ящик: медиана, квартили, усы, выбросы за усами
+    ax.set_title(col)
+fig.suptitle('Ящики с усами числовых столбцов')
+fig.tight_layout()
 ```
+
+Распределение по группам показывают `stacked_hist` и `density_by` из упражнений семинара 9, ящики по группам — `box_by` семинара 8.
 
 **Для каждой числовой переменной опишите:**
 - Тип распределения (нормальное, скошенное вправо/влево, равномерное)
@@ -326,20 +270,15 @@ plt.show()
 Постройте столбчатые диаграммы для категориальных переменных:
 
 ```python
-# Для каждой категориальной переменной
-for col in categorical_cols[:4]:  # Первые 4 переменные
-    plt.figure(figsize=(10, 6))
-    
-    # Топ-10 категорий
-    top_categories = df[col].value_counts().head(10)
-    
-    plt.barh(range(len(top_categories)), top_categories.values)
-    plt.yticks(range(len(top_categories)), top_categories.index)
-    plt.xlabel('Количество наблюдений')
-    plt.title(f'Топ-10 категорий: {col}')
-    plt.tight_layout()
-    plt.show()
+for col in categorical_cols:
+    fig, ax = plt.subplots(figsize=(8, 4))
+    df[col].value_counts().head(10)[::-1].plot.barh(ax=ax)   # самое частое сверху, горизонтально из-за длинных названий
+    ax.set_title(f'Десять самых частых значений: {col}')
+    ax.set_xlabel('Число наблюдений')
+    ax.set_ylabel('')
 ```
+
+Это функция `top_bars` из упражнений семинара 8; состав по группам показывает `share_bars`.
 
 **Проанализируйте:**
 - Какие категории доминируют?
@@ -351,29 +290,15 @@ for col in categorical_cols[:4]:  # Первые 4 переменные
 Если в данных есть временные переменные, постройте графики изменения во времени:
 
 ```python
-# Количество наблюдений по времени
-time_counts = df.groupby('date_column').size()
-
-plt.figure(figsize=(12, 6))
-plt.plot(time_counts.index, time_counts.values)
-plt.xlabel('Дата')
-plt.ylabel('Количество наблюдений')
-plt.title('Динамика количества наблюдений во времени')
-plt.xticks(rotation=45)
-plt.tight_layout()
-plt.show()
-
-# Агрегация по месяцам/годам
-monthly_counts = df.groupby(df['date_column'].dt.to_period('M')).size()
-plt.figure(figsize=(12, 6))
-monthly_counts.plot(kind='bar')
-plt.xlabel('Месяц')
-plt.ylabel('Количество наблюдений')
-plt.title('Количество наблюдений по месяцам')
-plt.xticks(rotation=45)
-plt.tight_layout()
-plt.show()
+by_month = df.groupby(df['date_column'].dt.to_period('M')).size()   # наблюдений по месяцам
+fig, ax = plt.subplots(figsize=(10, 4))
+by_month.plot(ax=ax, marker='o')                                   # время линией, период на оси X
+ax.set_title('Наблюдений по месяцам')
+ax.set_xlabel('Месяц')
+ax.set_ylabel('Число наблюдений');
 ```
+
+Линии по годам или группам с подсказкой при наведении строит `count_lines` из упражнений семинара 9, долю признака по периодам с полосой неопределённости — `share_line`.
 
 #### 5.4. Взаимосвязи между переменными
 
@@ -381,45 +306,36 @@ plt.show()
 
 **А) Scatter plot для числовых переменных:**
 ```python
-# Выберите 2-3 пары переменных с интересными корреляциями
-plt.figure(figsize=(10, 6))
-plt.scatter(df['variable_1'], df['variable_2'], alpha=0.5)
-plt.xlabel('Переменная 1')
-plt.ylabel('Переменная 2')
-plt.title('Взаимосвязь между переменными')
-plt.tight_layout()
-plt.show()
+fig, ax = plt.subplots(figsize=(8, 5))
+sns.scatterplot(data=df, x='variable_1', y='variable_2', s=10, alpha=0.3, ax=ax)   # точка на наблюдение, полупрозрачная
+ax.set_title('Связь двух числовых столбцов')
+ax.set_xlabel('Переменная 1')
+ax.set_ylabel('Переменная 2');
 ```
 
 **Б) Boxplot для числовой переменной по категориям:**
 ```python
-# Например, суммы исков по типам дел
-plt.figure(figsize=(12, 6))
-df.boxplot(column='numeric_variable', by='categorical_variable', figsize=(12, 6))
-plt.xlabel('Категория')
-plt.ylabel('Числовая переменная')
-plt.title('Распределение числовой переменной по категориям')
-plt.suptitle('')  # Убираем автоматический заголовок pandas
-plt.xticks(rotation=45)
-plt.tight_layout()
-plt.show()
+order = ['первая группа', 'вторая группа', 'третья группа']        # какие группы показать и в каком порядке
+fig, ax = plt.subplots(figsize=(8, 4))
+sns.boxplot(data=df, x='categorical_variable', y='numeric_variable', order=order, ax=ax)   # ящик на группу
+ax.set_title('Числовой столбец по группам')
+ax.set_xlabel('Группа')
+ax.set_ylabel('Значение');
 ```
+
+Среднее по группам с усами доверительного интервала рисует `mean_bars` из упражнений семинара 9.
 
 **В) Grouped bar chart:**
 ```python
-# Например, количество дел по типам и годам
-crosstab = pd.crosstab(df['categorical_1'], df['categorical_2'])
-crosstab.plot(kind='bar', figsize=(12, 6))
-plt.xlabel('Категория 1')
-plt.ylabel('Количество')
-plt.title('Распределение по двум категориальным переменным')
-plt.legend(title='Категория 2')
-plt.xticks(rotation=45)
-plt.tight_layout()
-plt.show()
+counts = pd.crosstab(df['categorical_1'], df['categorical_2'])     # число наблюдений по двум категориям
+fig, ax = plt.subplots(figsize=(8, 4))
+counts.plot(kind='bar', rot=0, ax=ax)                               # столбцы рядом; stacked=True даст состав
+ax.set_title('Наблюдения по двум категориям')
+ax.set_xlabel('Категория 1')
+ax.set_ylabel('Число наблюдений');
 ```
 
-**Постройте минимум 5 различных визуализаций**, которые раскрывают интересные закономерности в ваших данных.
+Это функция `grouped_bars` из упражнений семинара 8; панели по группам одной командой даёт `hist_panels` семинара 9.
 
 ---
 
@@ -427,27 +343,21 @@ plt.show()
 
 #### 6.1. Поиск выбросов
 
-Для числовых переменных найдите выбросы:
+Для числовых переменных найдите выбросы по правилу межквартильного размаха. Долю выбросов считайте от числа известных значений, а не от числа строк: пропуск с границей не сравнивается и не попадает ни в выбросы, ни в норму.
 
 ```python
-# Метод межквартильного размаха (IQR)
 for col in numeric_cols:
-    Q1 = df[col].quantile(0.25)
-    Q3 = df[col].quantile(0.75)
-    IQR = Q3 - Q1
-    
-    lower_bound = Q1 - 1.5 * IQR
-    upper_bound = Q3 + 1.5 * IQR
-    
-    outliers = df[(df[col] < lower_bound) | (df[col] > upper_bound)]
-    
-    print(f"\n=== {col} ===")
-    print(f"Границы: [{lower_bound:.2f}, {upper_bound:.2f}]")
-    print(f"Количество выбросов: {len(outliers)} ({len(outliers)/len(df)*100:.1f}%)")
-    
+    q1, q3 = df[col].quantile([0.25, 0.75])
+    iqr = q3 - q1
+    lower, upper = q1 - 1.5 * iqr, q3 + 1.5 * iqr
+    outliers = df[(df[col] < lower) | (df[col] > upper)]   # каждое сравнение в скобках
+    known = df[col].notna().sum()                          # значений без пропусков
+    print(f'{col}: границы [{lower:.2f}, {upper:.2f}], выбросов {len(outliers)} из {known} ({len(outliers) / known * 100:.1f} %)')
     if len(outliers) > 0:
-        print(f"Примеры выбросов: {outliers[col].head().values}")
+        print('   примеры:', outliers[col].head().tolist())
 ```
+
+Таблицу выбросов по трём правилам сразу — IQR, три сигмы и процентили — даёт `outlier_table` из упражнений семинара 10, границы IQR одного столбца — `iqr_bounds`. Правила дают разные числа и ломаются на счётчиках с кучей нулей: для них порог задают по смыслу.
 
 #### 6.2. Проверка на логические ошибки
 
@@ -480,6 +390,20 @@ if duplicates.sum() > 0:
     print("\nПримеры дублирующихся строк:")
     print(df[duplicates].head())
 ```
+
+Прежде чем удалять повторы, посмотрите, кто они: отчёт по группам даёт `duplicate_report` из упражнений семинара 10. Повтор не ошибка, если он объясним: два пассажира одной машины с одинаковыми полом и здоровьем — разные люди.
+
+#### 6.4. Журнал решений
+
+Найти мало: по каждой находке частей 2 и 6 нужно решение и его причина. Решений пять: оставить и пометить; исправить — вернуть настоящее значение, если оно восстанавливается из данных; удалить — только невозможное и только строки, которые больше ни на что не годны; срезать; заменить пропуском. Запишите их в журнал — таблицу с теми же столбцами, что в разделе 7 ноутбука семинара 10:
+
+| Проверка | Правило | Найдено | Решение |
+|---|---|---|---|
+| Сумма иска | IQR, верхняя граница … | … дел | оставить и пометить: крупные, но настоящие иски |
+| Срок рассмотрения | не меньше нуля | … дел | заменить пропуском: срок не восстановить, а строка нужна для остальных столбцов |
+| Даты из будущего | маска | 0 | записать: проверка без находок — тоже результат |
+
+В столбце «Решение» сначала что сделано, а после двоеточия — почему. Проверка, которая ничего не нашла, тоже идёт в журнал: читатель узнаёт, что правило проверено, а не забыто. Цену решения показывают среднее, медиана и число значений до и после. Образец журнала и памятка из пяти вопросов к выбросу — в разделе 7 ноутбука семинара 10 и в справочнике [reference/pandas.md](../reference/pandas.md#16-выбросы-и-аномалии).
 
 ---
 
@@ -524,6 +448,7 @@ if duplicates.sum() > 0:
 [Код проверки пропусков]
 [Таблица и визуализация пропусков]
 [Анализ и выводы]
+[Решение по каждому столбцу с пропусками и его причина]
 
 ## 3. Описательные статистики
 ### 3.1. Числовые переменные
@@ -543,6 +468,8 @@ if duplicates.sum() > 0:
 [Интерпретация]
 
 ## 5. Визуализация
+[Минимум 5 различных визуализаций с комментариями во всём разделе]
+
 ### 5.1. Распределения числовых переменных
 [Гистограммы и boxplot'ы с описанием]
 
@@ -553,12 +480,13 @@ if duplicates.sum() > 0:
 [Графики временных рядов]
 
 ### 5.4. Взаимосвязи между переменными
-[Минимум 5 различных визуализаций с комментариями]
+[Графики связей с комментариями]
 
 ## 6. Выявление аномалий
 [Код поиска выбросов]
 [Проверка логических ошибок]
 [Анализ дубликатов]
+[Журнал решений: проверка, правило, найдено, решение с причиной]
 
 ## 7. Выводы
 ### 7.1. Качество данных
@@ -608,34 +536,21 @@ if duplicates.sum() > 0:
 
 ### Основные библиотеки
 ```python
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 import seaborn as sns
 
-# Настройки для красивых графиков
-plt.rcParams['figure.figsize'] = (10, 6)
-plt.rcParams['font.size'] = 12
-sns.set_style("whitegrid")
-sns.set_palette("husl")
-
-# Для отображения всех столбцов в pandas
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_rows', 100)
+sns.set_theme(style='whitegrid')                 # оформление графиков по умолчанию, как в ноутбуках курса
+pd.set_option('display.max_columns', None)       # показывать все столбцы таблицы
 ```
 
 ### Дополнительные библиотеки (для бонусов)
 ```python
-# Интерактивные визуализации
-import plotly.express as px
-import plotly.graph_objects as go
-
-# Расширенная визуализация
-from pandas.plotting import scatter_matrix
-
-# Продвинутая визуализация отсутствующих данных
-import missingno as msno
+import plotly.express as px                      # интерактивные графики и карта: семинар 9, бонус этапа 2
 ```
+
+Рассеяние всех пар числовых столбцов даёт `sns.pairplot`, его показывал семинар 9.
 
 ---
 
@@ -645,13 +560,7 @@ import missingno as msno
 A: Используйте случайную выборку: `df.sample(n=5000)` или агрегируйте данные.
 
 **Q: Как быть с категориальными переменными с сотнями уникальных значений?**  
-A: Анализируйте топ-10 или топ-20 категорий, остальные объедините в "Другое".
-
-**Q: Нужно ли удалять выбросы на этом этапе?**  
-A: Нет, на этапе EDA только **выявляем** и **анализируем** выбросы. Решение об удалении принимается позже.
-
-**Q: Что делать с пропусками?**  
-A: Пока только анализируем. Стратегию заполнения разработаем на следующих этапах проекта.
+A: Анализируйте топ-10 или топ-20 категорий, остальные объедините в «Другое».
 
 **Q: Сколько всего визуализаций нужно создать?**  
 A: Минимум 5 различных типов графиков (гистограммы, boxplot, heatmap, scatter, bar chart). Качество важнее количества.
@@ -659,8 +568,8 @@ A: Минимум 5 различных типов графиков (гистог
 **Q: Можно ли использовать готовые функции для EDA (pandas-profiling)?**  
 A: Для быстрого ознакомления — да, но основное задание нужно выполнить вручную, чтобы разобраться в методах.
 
-**Q: Как определить, что корреляция "сильная"?**  
-A: Общепринятое правило: |r| > 0.7 — сильная, 0.4 < |r| < 0.7 — средняя, |r| < 0.4 — слабая.
+**Q: Как определить, что корреляция «сильная»?**  
+A: Общепринятое правило: |r| > 0.7 — сильная, 0.4 < |r| < 0.7 — средняя, |r| < 0.4 — слабая. Это шкала описания связей в разведочном анализе; размер эффекта проверенной гипотезы на этапе 3 называют по порогам Коэна — 0,1, 0,3 и 0,5, раздел 6 [notebooks/seminar-13-two-samples.ipynb](../notebooks/seminar-13-two-samples.ipynb).
 
 ---
 
