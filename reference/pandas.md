@@ -1351,7 +1351,7 @@ court
 
 - Ловушка: без `dayfirst=True` дата `05.03.2026` прочитается как 3 мая; в столбце ДТП дата и время записаны в одном поле, `to_datetime` читает их вместе.
 
-### s.dt.year, s.dt.month, s.dt.day, s.dt.hour, s.dt.dayofweek, s.dt.day_name(), s.dt.date, s.dt.days
+### s.dt.year, s.dt.month, s.dt.day, s.dt.hour, s.dt.day_of_week, s.dt.day_name(), s.dt.date, s.dt.days
 
 Семинар 6
 
@@ -1360,7 +1360,7 @@ court
 | Пример | Результат | Пояснение |
 |---|---|---|
 | `pd.to_datetime(cases['filed']).dt.month.head(2).tolist()` | `[2, 2]` | месяц подачи |
-| `pd.to_datetime(cases['filed']).dt.dayofweek.head(3).tolist()` | `[0, 1, 3]` | день недели, понедельник — 0 |
+| `pd.to_datetime(cases['filed']).dt.day_of_week.head(3).tolist()` | `[0, 1, 3]` | день недели, понедельник — 0 |
 | `pd.to_datetime(cases['filed']).dt.day_name().head(2).tolist()` | `['Monday', 'Tuesday']` | названия дней по-английски |
 | `(pd.Timestamp('2026-03-01') - pd.to_datetime(cases['filed'])).dt.days.head(2).tolist()` | `[27, 26]` | дней от подачи до 1 марта |
 | `pd.to_datetime(dtp['datetime']).dt.year.value_counts().sort_index().head(3)` | `datetime; 2015 1392; 2016 1313; 2017 1266; Name: count, dtype: int64` | ДТП по годам из кейса |

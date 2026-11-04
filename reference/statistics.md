@@ -659,7 +659,7 @@ z-тест для доли из модуля `statsmodels.stats.proportion`. Н�
 
 ```python
 z, p = proportions_ztest(dead.sum(), len(dtp), 0.15, prop_var=0.15)        # доля ДТП с погибшими против 0,15
-weekend = dtp['datetime'].dt.dayofweek >= 5                                # ДТП в субботу и воскресенье
+weekend = dtp['datetime'].dt.day_of_week >= 5                              # ДТП в субботу и воскресенье
 ```
 
 | Пример | Результат | Пояснение |
@@ -737,7 +737,7 @@ low_share, high_share = proportion_confint(dead.sum(), len(dtp), method='wilson'
 - объект `Power_divergenceResult` с полями `statistic` — χ² — и `pvalue`.
 
 ```python
-counts = dtp['datetime'].dt.dayofweek.value_counts().sort_index()          # ДТП по дням недели
+counts = dtp['datetime'].dt.day_of_week.value_counts().sort_index()        # ДТП по дням недели
 expected = pd.Series(counts.sum() / 7, index=counts.index)                 # ожидаемые при равенстве дней
 chi = stats.chisquare(counts, expected)                                    # хи-квадрат согласия
 ```

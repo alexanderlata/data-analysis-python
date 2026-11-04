@@ -67,7 +67,7 @@ by_year = dtp.groupby(dtp['datetime'].dt.year).size()                     # ДТ
 by_month = dtp.groupby(dtp['datetime'].dt.month).size()                   # ДТП по месяцам за все годы
 top6 = dtp['category'].value_counts().head(6)                             # шесть самых частых видов ДТП
 hours = dtp['datetime'].dt.hour                                           # час каждого ДТП
-weekday = dtp['datetime'].dt.dayofweek.rename('День недели')              # понедельник 0
+weekday = dtp['datetime'].dt.day_of_week.rename('День недели')            # понедельник 0
 ```
 
 ## 4. Фигура и оси
