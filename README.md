@@ -14,6 +14,7 @@
 | `reference/` | справочники-шпаргалки |
 | `datasets/` | наборы данных в формате CSV |
 | `exercises/` | упражнения к семинарам: листок `seminar-NN-tasks.md` с формулировками и ноутбук `seminar-NN-tasks.ipynb` с заготовками и тестами |
+| `explanations/` | пояснения к коду ноутбуков семинаров: `seminar-NN-code.pdf`, что делает каждая команда |
 | `syllabus.md` | календарный план |
 | `how-to-install-Python.md` | установка Python и окружения курса |
 | `environment.yml`, `requirements.txt` | окружение курса для conda и pip |
@@ -21,24 +22,24 @@
 
 ## Семинары
 
-| № | Тема | Ноутбук | Упражнения | Домашнее задание | Тесты и контрольные точки |
-|---|---|---|---|---|---|
-| 1 | Введение в курс: Jupyter Lab, Markdown, функции Python | [seminar-01-tasks.ipynb](notebooks/seminar-01-tasks.ipynb) | в ноутбуке | [homework-01.md](homework/homework-01.md) | тест «Семинар 1»; дома: тесты «Проверка установки» и «Домашнее задание 1: функции» |
-| 2 | NumPy: массивы, индексация, векторизация | [seminar-02-numpy-arrays.ipynb](notebooks/seminar-02-numpy-arrays.ipynb) | [листок](exercises/seminar-02-tasks.md), [ноутбук](exercises/seminar-02-tasks.ipynb) | [homework-02.md](homework/homework-02.md) | тест «Семинар 2» |
-| 3 | NumPy: случайные выборки, статистики, пропуски, поиск и сортировка | [seminar-03-numpy-stats.ipynb](notebooks/seminar-03-numpy-stats.ipynb) | [листок](exercises/seminar-03-tasks.md), [ноутбук](exercises/seminar-03-tasks.ipynb) | [homework-03.md](homework/homework-03.md) | тест «Семинар 3» |
-| 4 | Pandas: Series, DataFrame, загрузка и просмотр данных. Старт сквозного кейса | [seminar-04-pandas-basics.ipynb](notebooks/seminar-04-pandas-basics.ipynb) | [листок](exercises/seminar-04-tasks.md), [ноутбук](exercises/seminar-04-tasks.ipynb) | [homework-04.md](homework/homework-04.md) | тест «Семинар 4»; выдаётся этап 1 проекта |
-| 5 | Pandas: фильтрация, сортировка, группировка, агрегация, сводные таблицы | [seminar-05-pandas-groupby.ipynb](notebooks/seminar-05-pandas-groupby.ipynb) | [листок](exercises/seminar-05-tasks.md), [ноутбук](exercises/seminar-05-tasks.ipynb) | [homework-05.md](homework/homework-05.md) | тест «Семинар 5» |
-| 6 | Pandas: типы, даты, пропуски, объединение таблиц | [seminar-06-pandas-cleaning.ipynb](notebooks/seminar-06-pandas-cleaning.ipynb) | [листок](exercises/seminar-06-tasks.md), [ноутбук](exercises/seminar-06-tasks.ipynb) | [homework-06.md](homework/homework-06.md) | тест «Семинар 6»; сдача этапа 1 проекта; открывается тест «КР 1. Демовариант» |
-| 7 | Контрольная работа № 1: NumPy и pandas | [seminar-07-test-1.ipynb](notebooks/seminar-07-test-1.ipynb): правила и пустой ноутбук | | | КР 1: тест «КР 1» и задание «КР 1. Ноутбук» |
-| 8 | Matplotlib и Seaborn: базовые графики и оформление | [seminar-08-matplotlib-seaborn.ipynb](notebooks/seminar-08-matplotlib-seaborn.ipynb) | [листок](exercises/seminar-08-tasks.md), [ноутбук](exercises/seminar-08-tasks.ipynb) | [homework-08.md](homework/homework-08.md) | тест «Семинар 8» |
-| 9 | Seaborn и Plotly: распределения, связи, множественные графики | [seminar-09-seaborn-plotly.ipynb](notebooks/seminar-09-seaborn-plotly.ipynb) | [листок](exercises/seminar-09-tasks.md), [ноутбук](exercises/seminar-09-tasks.ipynb) | [homework-09.md](homework/homework-09.md) | тест «Семинар 9»; выдаётся этап 2 проекта |
-| 10 | Предобработка данных: выбросы и пропуски | [seminar-10-outliers-missing.ipynb](notebooks/seminar-10-outliers-missing.ipynb) | [листок](exercises/seminar-10-tasks.md), [ноутбук](exercises/seminar-10-tasks.ipynb) | [homework-10.md](homework/homework-10.md) | тест «Семинар 10» |
-| 11 | Проверка нормальности распределения | [seminar-11-normality.ipynb](notebooks/seminar-11-normality.ipynb) | [листок](exercises/seminar-11-tasks.md), [ноутбук](exercises/seminar-11-tasks.ipynb) | [homework-11.md](homework/homework-11.md) | тест «Семинар 11»; сдача этапа 2 проекта |
-| 12 | Гипотеза о среднем: одна выборка и доверительные интервалы | [seminar-12-one-sample.ipynb](notebooks/seminar-12-one-sample.ipynb) | [листок](exercises/seminar-12-tasks.md), [ноутбук](exercises/seminar-12-tasks.ipynb) | [homework-12.md](homework/homework-12.md) | тест «Семинар 12»; выдаётся этап 3 проекта |
-| 13 | Две выборки: t-тест, критерий Манна–Уитни, хи-квадрат для категориальных данных | [seminar-13-two-samples.ipynb](notebooks/seminar-13-two-samples.ipynb) | [листок](exercises/seminar-13-tasks.md), [ноутбук](exercises/seminar-13-tasks.ipynb) | [homework-13.md](homework/homework-13.md) | тест «Семинар 13»; открывается тест «КР 2. Демовариант» |
-| 14 | Контрольная работа № 2: визуализация, предобработка, гипотезы | [seminar-14-test-2.ipynb](notebooks/seminar-14-test-2.ipynb): правила и пустой ноутбук | | | КР 2: тест «КР 2» и задание «КР 2. Ноутбук»; сдача этапа 3 проекта |
-| 15 | Разведочный анализ данных (EDA): структура отчёта и полный пример | [seminar-15-eda.ipynb](notebooks/seminar-15-eda.ipynb) | [листок](exercises/seminar-15-tasks.md), [ноутбук](exercises/seminar-15-tasks.ipynb) | [homework-15.md](homework/homework-15.md) | тест «Семинар 15»; выдаётся задание на защиту проекта |
-| 16 | Защита проектов на собственных данных | [seminar-16-project-defense.ipynb](notebooks/seminar-16-project-defense.ipynb): регламент защиты, порядок выступлений, рубрика и лист вопросов | | | защита проекта: задание «Проект. Защита» |
+| № | Тема | Ноутбук | Упражнения | Домашнее задание | Пояснения к коду | Тесты и контрольные точки |
+|---|---|---|---|---|---|---|
+| 1 | Введение в курс: Jupyter Lab, Markdown, функции Python | [seminar-01-tasks.ipynb](notebooks/seminar-01-tasks.ipynb) | в ноутбуке | [homework-01.md](homework/homework-01.md) | [PDF](explanations/seminar-01-code.pdf) | тест «Семинар 1»; дома: тесты «Проверка установки» и «Домашнее задание 1: функции» |
+| 2 | NumPy: массивы, индексация, векторизация | [seminar-02-numpy-arrays.ipynb](notebooks/seminar-02-numpy-arrays.ipynb) | [листок](exercises/seminar-02-tasks.md), [ноутбук](exercises/seminar-02-tasks.ipynb) | [homework-02.md](homework/homework-02.md) | [PDF](explanations/seminar-02-code.pdf) | тест «Семинар 2» |
+| 3 | NumPy: случайные выборки, статистики, пропуски, поиск и сортировка | [seminar-03-numpy-stats.ipynb](notebooks/seminar-03-numpy-stats.ipynb) | [листок](exercises/seminar-03-tasks.md), [ноутбук](exercises/seminar-03-tasks.ipynb) | [homework-03.md](homework/homework-03.md) | [PDF](explanations/seminar-03-code.pdf) | тест «Семинар 3» |
+| 4 | Pandas: Series, DataFrame, загрузка и просмотр данных. Старт сквозного кейса | [seminar-04-pandas-basics.ipynb](notebooks/seminar-04-pandas-basics.ipynb) | [листок](exercises/seminar-04-tasks.md), [ноутбук](exercises/seminar-04-tasks.ipynb) | [homework-04.md](homework/homework-04.md) | [PDF](explanations/seminar-04-code.pdf) | тест «Семинар 4»; выдаётся этап 1 проекта |
+| 5 | Pandas: фильтрация, сортировка, группировка, агрегация, сводные таблицы | [seminar-05-pandas-groupby.ipynb](notebooks/seminar-05-pandas-groupby.ipynb) | [листок](exercises/seminar-05-tasks.md), [ноутбук](exercises/seminar-05-tasks.ipynb) | [homework-05.md](homework/homework-05.md) | [PDF](explanations/seminar-05-code.pdf) | тест «Семинар 5» |
+| 6 | Pandas: типы, даты, пропуски, объединение таблиц | [seminar-06-pandas-cleaning.ipynb](notebooks/seminar-06-pandas-cleaning.ipynb) | [листок](exercises/seminar-06-tasks.md), [ноутбук](exercises/seminar-06-tasks.ipynb) | [homework-06.md](homework/homework-06.md) | [PDF](explanations/seminar-06-code.pdf) | тест «Семинар 6»; сдача этапа 1 проекта; открывается тест «КР 1. Демовариант» |
+| 7 | Контрольная работа № 1: NumPy и pandas | [seminar-07-test-1.ipynb](notebooks/seminar-07-test-1.ipynb): правила и пустой ноутбук | | | | КР 1: тест «КР 1» и задание «КР 1. Ноутбук» |
+| 8 | Matplotlib и Seaborn: базовые графики и оформление | [seminar-08-matplotlib-seaborn.ipynb](notebooks/seminar-08-matplotlib-seaborn.ipynb) | [листок](exercises/seminar-08-tasks.md), [ноутбук](exercises/seminar-08-tasks.ipynb) | [homework-08.md](homework/homework-08.md) | [PDF](explanations/seminar-08-code.pdf) | тест «Семинар 8» |
+| 9 | Seaborn и Plotly: распределения, связи, множественные графики | [seminar-09-seaborn-plotly.ipynb](notebooks/seminar-09-seaborn-plotly.ipynb) | [листок](exercises/seminar-09-tasks.md), [ноутбук](exercises/seminar-09-tasks.ipynb) | [homework-09.md](homework/homework-09.md) | [PDF](explanations/seminar-09-code.pdf) | тест «Семинар 9»; выдаётся этап 2 проекта |
+| 10 | Предобработка данных: выбросы и пропуски | [seminar-10-outliers-missing.ipynb](notebooks/seminar-10-outliers-missing.ipynb) | [листок](exercises/seminar-10-tasks.md), [ноутбук](exercises/seminar-10-tasks.ipynb) | [homework-10.md](homework/homework-10.md) | [PDF](explanations/seminar-10-code.pdf) | тест «Семинар 10» |
+| 11 | Проверка нормальности распределения | [seminar-11-normality.ipynb](notebooks/seminar-11-normality.ipynb) | [листок](exercises/seminar-11-tasks.md), [ноутбук](exercises/seminar-11-tasks.ipynb) | [homework-11.md](homework/homework-11.md) | [PDF](explanations/seminar-11-code.pdf) | тест «Семинар 11»; сдача этапа 2 проекта |
+| 12 | Гипотеза о среднем: одна выборка и доверительные интервалы | [seminar-12-one-sample.ipynb](notebooks/seminar-12-one-sample.ipynb) | [листок](exercises/seminar-12-tasks.md), [ноутбук](exercises/seminar-12-tasks.ipynb) | [homework-12.md](homework/homework-12.md) | [PDF](explanations/seminar-12-code.pdf) | тест «Семинар 12»; выдаётся этап 3 проекта |
+| 13 | Две выборки: t-тест, критерий Манна–Уитни, хи-квадрат для категориальных данных | [seminar-13-two-samples.ipynb](notebooks/seminar-13-two-samples.ipynb) | [листок](exercises/seminar-13-tasks.md), [ноутбук](exercises/seminar-13-tasks.ipynb) | [homework-13.md](homework/homework-13.md) | [PDF](explanations/seminar-13-code.pdf) | тест «Семинар 13»; открывается тест «КР 2. Демовариант» |
+| 14 | Контрольная работа № 2: визуализация, предобработка, гипотезы | [seminar-14-test-2.ipynb](notebooks/seminar-14-test-2.ipynb): правила и пустой ноутбук | | | | КР 2: тест «КР 2» и задание «КР 2. Ноутбук»; сдача этапа 3 проекта |
+| 15 | Разведочный анализ данных (EDA): структура отчёта и полный пример | [seminar-15-eda.ipynb](notebooks/seminar-15-eda.ipynb) | [листок](exercises/seminar-15-tasks.md), [ноутбук](exercises/seminar-15-tasks.ipynb) | [homework-15.md](homework/homework-15.md) | [PDF](explanations/seminar-15-code.pdf) | тест «Семинар 15»; выдаётся задание на защиту проекта |
+| 16 | Защита проектов на собственных данных | [seminar-16-project-defense.ipynb](notebooks/seminar-16-project-defense.ipynb): регламент защиты, порядок выступлений, рубрика и лист вопросов | | | | защита проекта: задание «Проект. Защита» |
 
 ## Календарный план
 
@@ -46,7 +47,7 @@
 
 ## Правила работы
 
-Как работать с ноутбуком семинара: скачайте файл со страницы GitHub (кнопка скачивания справа вверху), откройте в Jupyter Lab, переименуйте в формате `Группа-Фамилия-Имя-seminar-NN.ipynb`. Упражнения к семинару лежат в папке `exercises/`: листок с формулировками и ноутбук с заготовками и тестами; они начинаются на паре и дорешиваются дома, ответы вводятся в тест Moodle. Что сдать и к какому сроку — в папке `homework/`.
+Как работать с ноутбуком семинара: скачайте файл со страницы GitHub (кнопка скачивания справа вверху), откройте в Jupyter Lab, переименуйте в формате `Группа-Фамилия-Имя-seminar-NN.ipynb`. Упражнения к семинару лежат в папке `exercises/`: листок с формулировками и ноутбук с заготовками и тестами; они начинаются на паре и дорешиваются дома, ответы вводятся в тест Moodle. Пояснения к коду ноутбука занятия — в папке `explanations/`: к ним стоит возвращаться, если непонятно, что делает команда. Что сдать и к какому сроку — в папке `homework/`.
 
 ## Проект на собственных данных
 
